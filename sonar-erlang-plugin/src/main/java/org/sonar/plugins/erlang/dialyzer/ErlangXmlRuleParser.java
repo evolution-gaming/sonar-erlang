@@ -34,7 +34,7 @@ import java.util.List;
 
 final class ErlangXmlRuleParser {
 
-  private static final Logger LOG = Loggers.get("ErlangXmlRuleParser");
+  private static final Logger LOG = Loggers.get(ErlangXmlRuleParser.class);
 
   List<ErlangRule> parse(InputStream input) {
     SAXParserFactory factory = SAXParserFactory.newInstance();

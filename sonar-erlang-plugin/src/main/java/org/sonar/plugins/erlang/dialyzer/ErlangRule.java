@@ -27,7 +27,7 @@ import java.util.List;
 
 public class ErlangRule {
   private List<String> messages = new ArrayList<>();
-  private Rule sonarRule = Rule.create();
+  private final Rule sonarRule = Rule.create();
 
   ErlangRule() {
     super();

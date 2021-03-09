@@ -32,7 +32,7 @@ import org.sonar.plugins.erlang.languages.ErlangLanguage;
  */
 public class DialyzerSensor implements Sensor {
 
-  private ErlangRuleManager dialyzerRuleManager;
+  private final ErlangRuleManager dialyzerRuleManager;
 
   public DialyzerSensor() {
     dialyzerRuleManager = new ErlangRuleManager(DialyzerRuleDefinition.DIALYZER_PATH);
