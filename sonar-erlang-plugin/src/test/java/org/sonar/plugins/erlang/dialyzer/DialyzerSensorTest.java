@@ -81,7 +81,6 @@ public class DialyzerSensorTest {
     context.fileSystem().add(dif);
   }
 
-  @Test
   @Ignore("Verify that Dialyzer sensor actually works.")
   public void checkDialyzerSensor() throws Exception {
     settings.setProperty(ErlangPlugin.EUNIT_FOLDER_KEY, ErlangPlugin.EUNIT_DEFAULT_FOLDER);
