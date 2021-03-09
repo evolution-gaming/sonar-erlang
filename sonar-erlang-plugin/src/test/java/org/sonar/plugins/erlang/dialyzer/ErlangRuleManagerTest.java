@@ -20,43 +20,29 @@
  */
 package org.sonar.plugins.erlang.dialyzer;
 
-import org.sonar.api.rules.Rule;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+public class ErlangRuleManagerTest {
+  ErlangRuleManager ruleManager;
 
-public class ErlangRule {
-  private final List<String> messages = new ArrayList<>();
-  private final Rule sonarRule = Rule.create();
-
-  ErlangRule() {
-    super();
+  @Before
+  public void setUp() {
+    ruleManager = new ErlangRuleManager("/org/sonar/plugins/erlang/dialyzer/rules.xml");
   }
 
-  boolean hasMessage(String message) {
-    return messages.contains(message);
+  @Test
+  public void testGetRuleKeyByMessageIfExists() {
+    Assert.assertEquals(
+            "X001",
+            ruleManager.getRuleKeyByMessage("Warning: .*?:.*?/.*? calls undefined function .*?:.*?/.*? \\(Xref\\)")
+    );
   }
 
-  /**
-   * Add a message to the rule
-   *
-   * @param message String
-   */
-  void addMessage(String message) {
-    messages.add(message);
+  @Test
+  public void testGetRuleKeyByMessageOtherRules() {
+    Assert.assertEquals("OTHER_RULES",
+            ruleManager.getRuleKeyByMessage("some nonexistent message"));
   }
-
-  public Rule getRule() {
-    return sonarRule;
-  }
-
-  /**
-   * Get the rule's current messages
-   *
-   * @return list of messages
-   */
-  public List<String> getMessages() {
-    return messages;
-  }
-
 }
