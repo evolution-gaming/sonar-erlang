@@ -20,29 +20,31 @@
  */
 package org.sonar.plugins.erlang.dialyzer;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.sonar.api.rules.Rule;
 
-import java.util.ArrayList;
-import java.util.List;
+public class ErlangRuleTest {
+  ErlangRule erlangRule;
 
-public class ErlangRule {
-  private final List<String> messages = new ArrayList<>();
-  private final Rule sonarRule = Rule.create();
-
-  ErlangRule() {
-    super();
+  @Before
+  public void setUp() {
+    erlangRule = new ErlangRule();
   }
 
-  boolean hasMessage(String message) {
-    return messages.contains(message);
+  @Test
+  public void testGetRule() {
+    Rule rule = erlangRule.getRule();
+
+    Assert.assertNotNull(rule);
   }
 
-  void addMessage(String message) {
-    messages.add(message);
-  }
+  @Test
+  public void testRuleMessageAdd() {
+    erlangRule.addMessage("test message");
 
-  public Rule getRule() {
-    return sonarRule;
+    Assert.assertTrue(erlangRule.hasMessage("test message"));
   }
 
 }
