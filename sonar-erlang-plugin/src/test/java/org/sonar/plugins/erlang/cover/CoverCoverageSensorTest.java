@@ -61,7 +61,7 @@ public class CoverCoverageSensorTest {
 
   @Test
   public void checkCoverSensorWithHtml() throws Exception {
-    settings.setProperty(ErlangPlugin.COVERDATA_FILENAME_KEY, "non_existing.coverdata");
+    settings.setProperty(ErlangPlugin.EUNIT_COVERDATA_FILENAME_KEY, "non_existing.coverdata");
     addFile(context, "src/erlcount_lib.erl");
     context.setSettings(settings);
 
@@ -73,7 +73,7 @@ public class CoverCoverageSensorTest {
 
   @Test
   public void checkCoverSensorWithDataFile() throws Exception {
-    settings.setProperty(ErlangPlugin.COVERDATA_FILENAME_KEY, ErlangPlugin.COVERDATA_DEFAULT_FILENAME);
+    settings.setProperty(ErlangPlugin.EUNIT_COVERDATA_FILENAME_KEY, ErlangPlugin.EUNIT_COVERDATA_DEFAULT_FILENAME);
     addFile(context, "src/erlcount_lib.erl");
     context.setSettings(settings);
 

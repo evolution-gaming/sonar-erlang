@@ -59,11 +59,9 @@ public class CoverCoverageSensor implements Sensor {
     File reportsDir = new File(context.fileSystem().baseDir().getPath(),
             configuration.get(ErlangPlugin.EUNIT_FOLDER_KEY).orElse(ErlangPlugin.EUNIT_DEFAULT_FOLDER));
 
-    Optional<String> coverDataFilename = configuration.get(ErlangPlugin.COVERDATA_FILENAME_KEY);
+    Optional<String> coverDataFilename = configuration.get(ErlangPlugin.EUNIT_COVERDATA_FILENAME_KEY);
 
-    if (!coverDataFilename.isPresent()) {
-      LOG.warn("Missing cover data file name in configuration");
-    } else {
+    if (coverDataFilename.isPresent()) {
       File coverDataFile = new File(reportsDir, coverDataFilename.get());
 
       if (coverDataFile.exists()) {
@@ -71,6 +69,8 @@ public class CoverCoverageSensor implements Sensor {
       } else {
         parseCoverHtmlOutput(context.fileSystem(), context, reportsDir);
       }
+    } else {
+      LOG.warn("Missing cover data file name in configuration");
     }
   }
 
