@@ -34,16 +34,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CoverDataFileParserTest {
 
-  private File coverDataTestFile;
+  private File eunitCoverDataTestFile, commonTestCoverDataTestFile;
 
   @Before
   public void setUp() {
-    coverDataTestFile = new File("src/test/resources/org/sonar/plugins/erlang/erlcount/.eunit/eunit.coverdata");
+    eunitCoverDataTestFile = new File("src/test/resources/org/sonar/plugins/erlang/erlcount/.eunit/eunit.coverdata");
+    commonTestCoverDataTestFile = new File("src/test/resources/org/sonar/plugins/erlang/erlcount/all.coverdata");
   }
 
   @Test
-  public void parseTest() throws IOException {
-    List<ErlangFileCoverage> coverageResult = CoverDataFileParser.parse(coverDataTestFile);
+  public void eunitParseTest() throws IOException {
+    List<ErlangFileCoverage> coverageResult = CoverDataFileParser.parse(eunitCoverDataTestFile);
     assertThat(coverageResult.get(0), Matchers.notNullValue());
 
     ErlangFileCoverage moduleCoverage = getCoverageResultForModule("erlcount_lib.erl", coverageResult);
@@ -52,6 +53,19 @@ public class CoverDataFileParserTest {
     assertThat(moduleCoverage.getCoveredLines(), Matchers.equalTo(19));
     assertThat(moduleCoverage.getLinesToCover(), Matchers.equalTo(21));
     assertThat(moduleCoverage.getUncoveredLines(), Matchers.equalTo(2));
+  }
+
+  @Test
+  public void commonTestParseTest() throws IOException {
+    List<ErlangFileCoverage> coverageResult = CoverDataFileParser.parse(commonTestCoverDataTestFile);
+    assertThat(coverageResult.get(0), Matchers.notNullValue());
+
+    ErlangFileCoverage moduleCoverage = getCoverageResultForModule("erlcount_lib.erl", coverageResult);
+
+    assertThat(moduleCoverage, Matchers.notNullValue());
+    assertThat(moduleCoverage.getCoveredLines(), Matchers.equalTo(17));
+    assertThat(moduleCoverage.getLinesToCover(), Matchers.equalTo(21));
+    assertThat(moduleCoverage.getUncoveredLines(), Matchers.equalTo(4));
   }
 
   private ErlangFileCoverage getCoverageResultForModule(String module, List<ErlangFileCoverage> cov) {
