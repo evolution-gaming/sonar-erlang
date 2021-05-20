@@ -116,12 +116,6 @@ public class CoverCoverageSensor implements Sensor {
     analyseCoveredFiles(fileSystem, context, coveredFiles);
   }
 
-  private ErlangFileCoverage analyseHtml(FileSystem fileSystem, String testCoverageFilePath) {
-    File coverCoverageReportFile = new File(testCoverageFilePath);
-    LCOVParser parser = new LCOVParser();
-    return parser.parseFile(coverCoverageReportFile);
-  }
-
   private ErlangFileCoverage analyseHtml(FileSystem fileSystem, String reportsFolder, String testCoverageFileName) {
     Path reportsPath = Paths.get(fileSystem.baseDir().toString(), reportsFolder);
     File coverCoverageReportFile = new File(reportsPath.toFile(), testCoverageFileName);
