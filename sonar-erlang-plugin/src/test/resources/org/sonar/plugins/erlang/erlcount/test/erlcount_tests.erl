@@ -3,7 +3,7 @@
 -ifndef(TESTDIR).
 %% Assumes we're running from the app's directory. We want to target the
 %% 'learn-you-some-erlang' directory.
--define(TESTDIR, "..").
+-define(TESTDIR, "test").
 -endif.
 
 %% NOTE:
