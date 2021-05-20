@@ -21,7 +21,7 @@
 
 package org.sonar.plugins.erlang.cover;
 
-import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CoverDataFileParserTest {
 
@@ -45,27 +44,27 @@ public class CoverDataFileParserTest {
   @Test
   public void eunitParseTest() throws IOException {
     List<ErlangFileCoverage> coverageResult = CoverDataFileParser.parse(eunitCoverDataTestFile);
-    assertThat(coverageResult.get(0), Matchers.notNullValue());
+    Assert.assertNotNull(coverageResult.get(0));
 
     ErlangFileCoverage moduleCoverage = getCoverageResultForModule("erlcount_lib.erl", coverageResult);
 
-    assertThat(moduleCoverage, Matchers.notNullValue());
-    assertThat(moduleCoverage.getCoveredLines(), Matchers.equalTo(19));
-    assertThat(moduleCoverage.getLinesToCover(), Matchers.equalTo(21));
-    assertThat(moduleCoverage.getUncoveredLines(), Matchers.equalTo(2));
+    Assert.assertNotNull(moduleCoverage);
+    Assert.assertEquals(19, moduleCoverage.getCoveredLines());
+    Assert.assertEquals(21, moduleCoverage.getLinesToCover());
+    Assert.assertEquals(2, moduleCoverage.getUncoveredLines());
   }
 
   @Test
   public void commonTestParseTest() throws IOException {
     List<ErlangFileCoverage> coverageResult = CoverDataFileParser.parse(commonTestCoverDataTestFile);
-    assertThat(coverageResult.get(0), Matchers.notNullValue());
+    Assert.assertNotNull(coverageResult.get(0));
 
     ErlangFileCoverage moduleCoverage = getCoverageResultForModule("erlcount_lib.erl", coverageResult);
 
-    assertThat(moduleCoverage, Matchers.notNullValue());
-    assertThat(moduleCoverage.getCoveredLines(), Matchers.equalTo(17));
-    assertThat(moduleCoverage.getLinesToCover(), Matchers.equalTo(21));
-    assertThat(moduleCoverage.getUncoveredLines(), Matchers.equalTo(4));
+    Assert.assertNotNull(moduleCoverage);
+    Assert.assertEquals(17, moduleCoverage.getCoveredLines());
+    Assert.assertEquals(21, moduleCoverage.getLinesToCover());
+    Assert.assertEquals(4, moduleCoverage.getUncoveredLines());
   }
 
   private ErlangFileCoverage getCoverageResultForModule(String module, List<ErlangFileCoverage> cov) {
