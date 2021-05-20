@@ -35,7 +35,7 @@ import org.sonar.plugins.erlang.languages.ErlangLanguage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,18 +56,18 @@ public class CoverCoverageSensor implements Sensor {
   @Override
   public void execute(SensorContext context) {
     Configuration configuration = context.config();
-    File reportsDir = new File(context.fileSystem().baseDir().getPath(),
+    File eunitReportsDir = new File(context.fileSystem().baseDir().getPath(),
             configuration.get(ErlangPlugin.EUNIT_FOLDER_KEY).orElse(ErlangPlugin.EUNIT_DEFAULT_FOLDER));
 
-    Optional<String> coverDataFilename = configuration.get(ErlangPlugin.EUNIT_COVERDATA_FILENAME_KEY);
+    Optional<String> eunitCoverDataFileName = configuration.get(ErlangPlugin.EUNIT_COVERDATA_FILENAME_KEY);
 
-    if (coverDataFilename.isPresent()) {
-      File coverDataFile = new File(reportsDir, coverDataFilename.get());
+    if (eunitCoverDataFileName.isPresent()) {
+      File coverDataFile = new File(eunitReportsDir, eunitCoverDataFileName.get());
 
       if (coverDataFile.exists()) {
         parseCoverdataFile(context.fileSystem(), context, coverDataFile);
       } else {
-        parseCoverHtmlOutput(context.fileSystem(), context, reportsDir);
+        parseCoverHtmlOutput(context.fileSystem(), context, eunitReportsDir);
       }
     } else {
       LOG.warn("Missing cover data file name in configuration");
@@ -87,20 +87,20 @@ public class CoverCoverageSensor implements Sensor {
     LOG.debug("Parsing coverage results in html format from folder {}", reportsDir);
 
     GenericExtFilter filter = new GenericExtFilter(".html");
-    String[] list = reportsDir.list(filter);
+    String[] fileList = reportsDir.list(filter);
 
-    if (list == null || list.length == 0) {
+    if (fileList == null || fileList.length == 0) {
       LOG.warn("no files end with .html in {}", reportsDir);
       return;
     }
-    List<ErlangFileCoverage> coveredFiles = new ArrayList<>();
-    for (String file : list) {
-      if (!file.matches(".*\\.COVER.html")) {
-        continue;
-      }
-      String reportsFolder = getTestReportsFolder(context.config());
-      coveredFiles.add(analyseHtml(fileSystem, reportsFolder, file));
-    }
+
+    String reportsFolder = getEunitTestReportsFolder(context.config());
+
+    List<ErlangFileCoverage> coveredFiles = Arrays.stream(fileList)
+            .filter(fileName -> fileName.matches(".*\\.COVER.html"))
+            .map(fileName -> analyseHtml(fileSystem, reportsFolder, fileName))
+            .collect(Collectors.toList());
+
     analyseCoveredFiles(fileSystem, context, coveredFiles);
   }
 
@@ -139,16 +139,17 @@ public class CoverCoverageSensor implements Sensor {
             .get(0);
   }
 
-  private String getTestReportsFolder(Configuration configuration) {
+  private String getEunitTestReportsFolder(Configuration configuration) {
     return configuration.get(ErlangPlugin.EUNIT_FOLDER_KEY).orElse(ErlangPlugin.EUNIT_DEFAULT_FOLDER);
   }
 
   private NewCoverage getNewCoverageForFile(InputFile inputFile, SensorContext sensorContext, ErlangFileCoverage erlangFileCoverage) {
     NewCoverage coverage = sensorContext.newCoverage().onFile(inputFile);
     Map<Integer, Integer> hits = erlangFileCoverage.getLineCoverageData();
-    for (Map.Entry<Integer, Integer> entry : hits.entrySet()) {
-      coverage.lineHits(entry.getKey(), entry.getValue());
-    }
+    hits
+            .entrySet()
+            .stream()
+            .forEach(line -> coverage.lineHits(line.getKey(), line.getValue()));
 
     return coverage;
   }
