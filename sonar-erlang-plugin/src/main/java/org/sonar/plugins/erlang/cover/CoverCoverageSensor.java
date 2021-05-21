@@ -40,7 +40,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CoverCoverageSensor implements Sensor {
@@ -58,12 +57,12 @@ public class CoverCoverageSensor implements Sensor {
   @Override
   public void execute(SensorContext context) {
     Configuration configuration = context.config();
-    File eunitReportsDir = new File(context.fileSystem().baseDir().getPath(),
-            configuration.get(ErlangPlugin.EUNIT_FOLDER_KEY).orElse(ErlangPlugin.EUNIT_DEFAULT_FOLDER));
 
-    Optional<String> eunitCoverDataFileName = configuration.get(ErlangPlugin.EUNIT_COVERDATA_FILENAME_KEY);
+    String eunitCoverDataFileName = getEunitCoverageFileName(configuration);
     String commonTestCoverDataFileName = getCommonTestCoverageFileName(configuration);
 
+    File eunitReportsDir = new File(context.fileSystem().baseDir().getPath(), getEunitTestReportsFolder(configuration));
+    File eunitCoverDataFile = new File(eunitReportsDir, eunitCoverDataFileName);
     File commonTestCoverDataFile = new File(context.fileSystem().baseDir().getPath(), commonTestCoverDataFileName);
 
     // We run the same cover parsing for CommonTest, sensor will save max values for coverage metrics
@@ -72,21 +71,17 @@ public class CoverCoverageSensor implements Sensor {
       parseCoverdataFile(context.fileSystem(), context, commonTestCoverDataFile);
     }
 
-    if (eunitCoverDataFileName.isPresent()) {
-      File eunitCoverDataFile = new File(eunitReportsDir, eunitCoverDataFileName.get());
-
-      if (eunitCoverDataFile.exists()) {
-        parseCoverdataFile(context.fileSystem(), context, eunitCoverDataFile);
-      } else {
-        parseCoverHtmlOutput(context.fileSystem(), context, eunitReportsDir);
-      }
+    if (eunitCoverDataFile.exists()) {
+      LOG.debug("Found Eunit coverage report file at {}", eunitCoverDataFile.getPath());
+      parseCoverdataFile(context.fileSystem(), context, eunitCoverDataFile);
     } else {
-      LOG.warn("Missing eunit cover data file name in configuration");
+      parseCoverHtmlOutput(context.fileSystem(), context, eunitReportsDir);
     }
 
   }
 
   private void parseCoverdataFile(FileSystem fileSystem, SensorContext context, File coverDataFile) {
+    LOG.debug("Trying to parse coverage data file: {}", coverDataFile.getName());
     try {
       List<ErlangFileCoverage> coveredFiles = CoverDataFileParser.parse(coverDataFile);
       analyseCoveredFiles(fileSystem, context, coveredFiles);
@@ -153,6 +148,10 @@ public class CoverCoverageSensor implements Sensor {
 
   private String getEunitTestReportsFolder(Configuration configuration) {
     return configuration.get(ErlangPlugin.EUNIT_FOLDER_KEY).orElse(ErlangPlugin.EUNIT_DEFAULT_FOLDER);
+  }
+
+  private String getEunitCoverageFileName(Configuration configuration) {
+    return configuration.get(ErlangPlugin.EUNIT_COVERDATA_FILENAME_KEY).orElse(ErlangPlugin.EUNIT_COVERDATA_DEFAULT_FILENAME);
   }
 
   private String getCommonTestCoverageFileName(Configuration configuration) {
