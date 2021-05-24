@@ -34,41 +34,41 @@ import org.sonar.plugins.erlang.xref.XrefRuleDefinition;
 import org.sonar.plugins.erlang.xref.XrefSensor;
 
 @Properties({
-        @Property(key = ErlangPlugin.EUNIT_FOLDER_KEY,
-                defaultValue = ErlangPlugin.EUNIT_DEFAULT_FOLDER,
-                name = "Eunit Default Output Folder",
-                description = "Folder where Eunit unit test and code coverage reports are located",
-                global = true, project = true),
+    @Property(key = ErlangPlugin.EUNIT_FOLDER_KEY,
+        defaultValue = ErlangPlugin.EUNIT_DEFAULT_FOLDER,
+        name = "Eunit Default Output Folder",
+        description = "Folder where Eunit unit test and code coverage reports are located",
+        global = true, project = true),
 
-        @Property(key = ErlangPlugin.DIALYZER_FILENAME_KEY,
-                defaultValue = ErlangPlugin.DIALYZER_DEFAULT_FILENAME,
-                name = "Dialyzer Default Filename",
-                description = "Filename of the dialyzer output located in the eunit folder",
-                global = true, project = true),
+    @Property(key = ErlangPlugin.DIALYZER_FILENAME_KEY,
+        defaultValue = ErlangPlugin.DIALYZER_DEFAULT_FILENAME,
+        name = "Dialyzer Default Filename",
+        description = "Filename of the dialyzer output located in the eunit folder",
+        global = true, project = true),
 
-        @Property(key = ErlangPlugin.XREF_FILENAME_KEY,
-                defaultValue = ErlangPlugin.XREF_DEFAULT_FILENAME,
-                name = "Xref Default Filename",
-                description = "Filename of the xref output located in the eunit folder",
-                global = true, project = true),
+    @Property(key = ErlangPlugin.XREF_FILENAME_KEY,
+        defaultValue = ErlangPlugin.XREF_DEFAULT_FILENAME,
+        name = "Xref Default Filename",
+        description = "Filename of the xref output located in the eunit folder",
+        global = true, project = true),
 
-        @Property(key = ErlangPlugin.EUNIT_COVERDATA_FILENAME_KEY,
-                defaultValue = ErlangPlugin.EUNIT_COVERDATA_DEFAULT_FILENAME,
-                name = "EUnit coverdata Default Filename",
-                description = "Filename of the Eunit generated coverdata file located in the eunit folder",
-                global = true, project = true),
+    @Property(key = ErlangPlugin.EUNIT_COVERDATA_FILENAME_KEY,
+        defaultValue = ErlangPlugin.EUNIT_COVERDATA_DEFAULT_FILENAME,
+        name = "EUnit coverdata Default Filename",
+        description = "Filename of the Eunit generated coverdata file located in the eunit folder",
+        global = true, project = true),
 
-        @Property(key = ErlangPlugin.CT_COVERDATA_FILENAME_KEY,
-                defaultValue = ErlangPlugin.CT_COVERDATA_DEFAULT_FILENAME,
-                name = "CommonTest coverdata default file name.",
-                description = "Path to the Common Test coverage data file.",
-                global = true, project = true),
+    @Property(key = ErlangPlugin.CT_COVERDATA_FILENAME_KEY,
+        defaultValue = ErlangPlugin.CT_COVERDATA_DEFAULT_FILENAME,
+        name = "CommonTest coverdata default file name.",
+        description = "Path to the Common Test coverage data file.",
+        global = true, project = true),
 
-        @Property(key = ErlangPlugin.REBAR_CONFIG_FILENAME_KEY,
-                defaultValue = ErlangPlugin.REBAR_DEFAULT_CONFIG_FILENAME,
-                name = "Rebar configfile name",
-                description = "Filename of the rebar config file",
-                global = true, project = true)
+    @Property(key = ErlangPlugin.REBAR_CONFIG_FILENAME_KEY,
+        defaultValue = ErlangPlugin.REBAR_DEFAULT_CONFIG_FILENAME,
+        name = "Rebar configfile name",
+        description = "Filename of the rebar config file",
+        global = true, project = true)
 })
 public class ErlangPlugin implements Plugin {
 
@@ -98,22 +98,22 @@ public class ErlangPlugin implements Plugin {
     context.addExtension(ErlangLanguageProperties.getProperties());
 
     context.addExtensions(
-            ErlangHighlighter.class,
-            ErlangCpdVisitor.class,
+        ErlangHighlighter.class,
+        ErlangCpdVisitor.class,
 
-            ErlangSquidSensor.class,
+        ErlangSquidSensor.class,
 
-            ErlangChecksRuleDefinition.class,
-            DialyzerRuleDefinition.class,
-            XrefRuleDefinition.class,
-            ErlangProfile.class,
+        ErlangChecksRuleDefinition.class,
+        DialyzerRuleDefinition.class,
+        XrefRuleDefinition.class,
+        ErlangProfile.class,
 
-            EunitXmlSensor.class,
+        EunitXmlSensor.class,
 
-            CoverCoverageSensor.class,
+        CoverCoverageSensor.class,
 
-            DialyzerSensor.class,
-            XrefSensor.class
+        DialyzerSensor.class,
+        XrefSensor.class
     );
   }
 }

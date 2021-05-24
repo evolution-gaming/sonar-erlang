@@ -49,9 +49,9 @@ public class CoverCoverageSensor implements Sensor {
   @Override
   public void describe(SensorDescriptor descriptor) {
     descriptor
-            .onlyOnLanguage(ErlangLanguage.KEY)
-            .name("Erlang Analyser Sensor")
-            .onlyOnFileType(InputFile.Type.MAIN);
+        .onlyOnLanguage(ErlangLanguage.KEY)
+        .name("Erlang Analyser Sensor")
+        .onlyOnFileType(InputFile.Type.MAIN);
   }
 
   @Override
@@ -104,9 +104,9 @@ public class CoverCoverageSensor implements Sensor {
     String reportsFolder = getEunitTestReportsFolder(context.config());
 
     List<ErlangFileCoverage> coveredFiles = Arrays.stream(fileList)
-            .filter(fileName -> fileName.matches(".*\\.COVER.html"))
-            .map(fileName -> analyseHtml(fileSystem, reportsFolder, fileName))
-            .collect(Collectors.toList());
+        .filter(fileName -> fileName.matches(".*\\.COVER.html"))
+        .map(fileName -> analyseHtml(fileSystem, reportsFolder, fileName))
+        .collect(Collectors.toList());
 
     analyseCoveredFiles(fileSystem, context, coveredFiles);
   }
@@ -140,10 +140,10 @@ public class CoverCoverageSensor implements Sensor {
 
   private ErlangFileCoverage getFileCoverage(InputFile input, List<ErlangFileCoverage> coverages) {
     return coverages
-            .stream()
-            .filter(erlangFileCoverage -> erlangFileCoverage.getFilePath().endsWith(input.filename()))
-            .collect(Collectors.toList())
-            .get(0);
+        .stream()
+        .filter(erlangFileCoverage -> erlangFileCoverage.getFilePath().endsWith(input.filename()))
+        .collect(Collectors.toList())
+        .get(0);
   }
 
   private String getEunitTestReportsFolder(Configuration configuration) {
@@ -162,9 +162,9 @@ public class CoverCoverageSensor implements Sensor {
     NewCoverage coverage = sensorContext.newCoverage().onFile(inputFile);
     Map<Integer, Integer> hits = erlangFileCoverage.getLineCoverageData();
     hits
-            .entrySet()
-            .stream()
-            .forEach(line -> coverage.lineHits(line.getKey(), line.getValue()));
+        .entrySet()
+        .stream()
+        .forEach(line -> coverage.lineHits(line.getKey(), line.getValue()));
 
     return coverage;
   }

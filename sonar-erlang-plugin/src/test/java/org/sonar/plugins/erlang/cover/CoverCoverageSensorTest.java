@@ -50,11 +50,11 @@ public class CoverCoverageSensorTest {
 
   private void addFile(SensorContextTester context, String path) throws Exception {
     DefaultInputFile dif = new TestInputFileBuilder("test", path)
-            .setLanguage("erlang")
-            .setType(InputFile.Type.MAIN)
-            .setModuleBaseDir(testModuleBasedir.toPath())
-            .initMetadata(new String(Files.readAllBytes(testModuleBasedir.toPath().resolve(path))))
-            .build();
+        .setLanguage("erlang")
+        .setType(InputFile.Type.MAIN)
+        .setModuleBaseDir(testModuleBasedir.toPath())
+        .initMetadata(new String(Files.readAllBytes(testModuleBasedir.toPath().resolve(path))))
+        .build();
 
     context.fileSystem().add(dif);
   }
