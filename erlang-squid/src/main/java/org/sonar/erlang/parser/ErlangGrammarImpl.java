@@ -451,7 +451,14 @@ public enum ErlangGrammarImpl implements GrammarRuleKey {
     b.rule(endifAttr).is(minus, semiKeyword("endif", b), dot);
 
     b.rule(moduleAttr).is(minus, semiKeyword("module", b), lparenthesis, atom, rparenthesis, dot);
-    b.rule(exportAttr).is(minus, semiKeyword("export", b), lparenthesis, funcExport, rparenthesis, dot);
+    b.rule(exportAttr).is(
+      minus,
+      b.firstOf(
+        semiKeyword("export", b),
+        semiKeyword("export_type", b)
+      ),
+      lparenthesis, funcExport, rparenthesis, dot);
+
     b.rule(compileAttr).is(minus, semiKeyword("compile", b), lparenthesis, primaryExpression, rparenthesis, dot);
 
     b.rule(defineAttr).is(minus, semiKeyword("define", b),
@@ -485,10 +492,8 @@ public enum ErlangGrammarImpl implements GrammarRuleKey {
         semiKeyword("ignore_xref", b),
         semiKeyword("include_lib", b),
         semiKeyword("author", b),
-        semiKeyword("export_type", b),
         semiKeyword("deprecated", b),
-        semiKeyword("asn1_info", b),
-        semiKeyword("export_types", b)),
+        semiKeyword("asn1_info", b)),
       lparenthesis, b.firstOf(funcArity, primaryExpression), rparenthesis, dot);
 
     b.rule(anyAttr).is(minus, b.sequence(b.nextNot(moduleAttrTags), atom), lparenthesis, primaryExpression, rparenthesis, dot);

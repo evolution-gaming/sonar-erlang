@@ -197,7 +197,7 @@ public class ModuleAttributesTest {
   public void bugs(){
     assertThat(b.rule(ErlangGrammarImpl.module))
       .matches(code(" -define(GEN_FSM, p1_fsm).", "-behaviour(?GEN_FSM)."))
-      .matches("-export_types([index_info/0]).")
+      .matches("-export_type([index_info/0]).")
       .matches(" -ifdef(NO_TRANSIENT_SUPERVISORS).\n" +
         " -define(SUPERVISOR_START, \n" +
         " gen_fsm:start(?MODULE, [Host, ServerHost, Access, Room, HistorySize,\n" +
