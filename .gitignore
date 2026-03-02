@@ -3,7 +3,8 @@ target/
 
 # SonarQube
 .sonar/
-sonar/data/es7/
+sonar/logs/
+sonar/data/es*/
 sonar/data/logs/
 sonar/data/sonar.mv.db
 sonar/data/web/

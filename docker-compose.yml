@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   sq:
-    image: 'sonarqube:9.9.1-community'
+    image: 'sonarqube:26.2.0.119303-community'
     ports:
       - '9000:9000'
     volumes:

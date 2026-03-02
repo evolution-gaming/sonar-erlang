@@ -106,8 +106,8 @@ public class ErlangPlugin implements Plugin {
   @Override
   public void define(Context context) {
     // languages
-    context.addExtension(ErlangLanguage.class);
-    context.addExtension(ErlangLanguageProperties.getProperties());
+    context.addExtensions(ErlangLanguage.class, ErlangQualityProfile.class);
+    context.addExtensions(ErlangLanguageProperties.getProperties());
 
     context.addExtensions(
         ErlangHighlighter.class,
@@ -119,7 +119,6 @@ public class ErlangPlugin implements Plugin {
         DialyzerRuleDefinition.class,
         ElvisRuleDefinition.class,
         XrefRuleDefinition.class,
-        ErlangQualityProfile.class,
 
         EunitXmlSensor.class,
 
