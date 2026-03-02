@@ -11,7 +11,7 @@
 
     <groupId>com.evolution.sonarqube.erlang</groupId>
     <artifactId>erlang</artifactId>
-    <version>1.6</version>
+    <version>1.7</version>
     <packaging>pom</packaging>
 
     <name>Erlang</name>
