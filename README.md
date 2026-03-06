@@ -21,7 +21,7 @@ A sample project is available on GitHub: https://github.com/SonarSource/sonar-sc
 
 Maven and Ant can also be used to launch analysis on Erlang projects.
 
-The plugin has been tested to work with SonarQube Community Version `9.9.1` .
+The plugin has been tested to work with SonarQube Community Version `26.2`.
 
 ### Configuration
 
